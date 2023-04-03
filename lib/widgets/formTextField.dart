@@ -117,22 +117,45 @@ textfieldforNumbers(String labelText, String hintText, int isRequired,
 }
 
 class SelectDate extends StatefulWidget {
-  const SelectDate({super.key, required this.onChanged});
+  const SelectDate({super.key, required this.onChanged, required this.label});
+  final String label;
   final ValueChanged<Map<String, dynamic>> onChanged;
-
   @override
   State<SelectDate> createState() => _SelectDateState();
 }
 
 class _SelectDateState extends State<SelectDate> {
   DateTime? pickedDate = DateTime.now();
-  String formattedDate = DateTime.now().toString();
+  String formattedDate = "";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    formattedDate = widget.label;
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
         pickedDate = await showDatePicker(
             context: context,
+            builder: (context, child) {
+              return Theme(
+                data: Theme.of(context).copyWith(
+                    colorScheme: ColorScheme.light(
+                      primary: primaryColor, // header background color
+                      onPrimary: textColor, // header text color
+                      onSurface: primaryColor, // body text color
+                    ),
+                    textButtonTheme: TextButtonThemeData(
+                      style: TextButton.styleFrom(
+                        primary: primaryColor, // button text color
+                      ),
+                    )),
+                child: child!,
+              );
+            },
             initialDate: DateTime.now(),
             firstDate: DateTime(1950),
             //DateTime.now() - not to allow to choose before today.
@@ -140,7 +163,7 @@ class _SelectDateState extends State<SelectDate> {
 
         if (pickedDate != null) {
           setState(() {
-            formattedDate = DateFormat('dd MMM').format(pickedDate!);
+            formattedDate = DateFormat('dd MMM yyyy').format(pickedDate!);
           });
         }
         Map<String, dynamic> date = {
@@ -149,13 +172,29 @@ class _SelectDateState extends State<SelectDate> {
         };
         widget.onChanged(date);
       },
-      child: Row(
+      child: Column(
         children: [
-          Text(
-            formattedDate,
-            style: TextStyle(fontSize: 18 * getResponsive(context)),
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            decoration: BoxDecoration(
+                color: Colors.white70, borderRadius: BorderRadius.circular(10)),
+            height: 55 * getResponsive(context),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  formattedDate,
+                  style: TextStyle(
+                      fontSize: 12 * getResponsiveText(context),
+                      color: Colors.grey),
+                ),
+                const Icon(Icons.arrow_drop_down_rounded)
+              ],
+            ),
           ),
-          const Icon(Icons.arrow_drop_down_rounded)
+          SizedBox(
+            height: 20 * getResponsive(context),
+          )
         ],
       ),
     );

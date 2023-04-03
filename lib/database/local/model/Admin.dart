@@ -27,7 +27,7 @@ class Admin {
     };
   }
 
-  static Admin fromJson(Map<String, Object> first) => Admin(
+  static Admin fromJson(Map<String, Object?> first) => Admin(
       username: first['username'] as String,
       password: first['password'] as String,
       name: first['name'] as String,

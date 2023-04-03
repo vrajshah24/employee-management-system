@@ -1,4 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:employee_management_system/database/local/model/Admin.dart';
+import 'package:employee_management_system/database/local/services/AdminService.dart';
 import 'package:employee_management_system/database/local/services/EmployeeService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -11,23 +13,19 @@ import '../registeredSuccessfully.dart';
 import '../responsive.dart';
 import '../widgets/formTextField.dart';
 
-class AddEmployee extends StatefulWidget {
-  const AddEmployee({super.key});
+class AddAdmin extends StatefulWidget {
+  const AddAdmin({super.key});
 
   @override
-  State<AddEmployee> createState() => _AddEmployeeState();
+  State<AddAdmin> createState() => _AddAdminState();
 }
 
-class _AddEmployeeState extends State<AddEmployee> {
+class _AddAdminState extends State<AddAdmin> {
   GlobalKey<FormState> form = GlobalKey<FormState>();
 
   TextEditingController name = TextEditingController();
   TextEditingController address = TextEditingController();
-  TextEditingController code = TextEditingController();
   TextEditingController mobile = TextEditingController();
-  TextEditingController bankAcc = TextEditingController();
-  TextEditingController qualification = TextEditingController();
-  TextEditingController salary = TextEditingController();
   TextEditingController position = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -92,48 +90,22 @@ class _AddEmployeeState extends State<AddEmployee> {
                       horizontal: 35 * getResponsive(context)),
                   child: Column(
                     children: [
-                      textfield('Name', 'Name', 1, name),
-                      SelectDate(
-                          onChanged: (value) {
-                            dobDate = value;
-                          },
-                          label: "Select DOB"),
-                      textfield('Address', 'Address', 1, address),
-                      SelectDate(
-                          onChanged: (value) {
-                            joiningDate = value;
-                          },
-                          label: "Select Joining Date"),
-                      // SelectDate(onChanged: (value) {}),
-                      textfield('Employee Code', 'Employee Code', 1, code),
-                      textfield('Mobile No', 'Mobile No', 1, mobile),
-                      textfield(
-                          'Bank Account No', 'Bank Account No', 1, bankAcc),
-                      textfield(
-                          'Qualification', 'Qualification', 1, qualification),
-                      textfield('Salary', 'Salary', 1, salary),
-                      textfield('Position', 'Position', 1, position),
                       textfield('Username', 'Username', 1, username),
                       textfield('Password', 'Password', 1, password),
+                      textfield('Name', 'Name', 1, name),
+                      textfield('Mobile No', 'Mobile No', 1, mobile),
+                      textfield('Position', 'Position', 1, position),
                       InkWell(
                         onTap: () async {
                           if (form.currentState!.validate()) {
-                            Employee user = Employee(
-                                ename: name.text,
-                                edob: dobDate['actualDate'].toString(),
-                                eaddress: address.text,
-                                ejoining_dt:
-                                    joiningDate['actualDate'].toString(),
-                                ecode: code.text,
-                                emobile_no: mobile.text,
-                                ebank_acc_no: bankAcc.text,
-                                equalification: qualification.text,
-                                esalary: salary.text,
-                                eposition: position.text,
-                                eusername: username.text,
-                                epassword: password.text,
-                                estatus: 1);
-                            var res = await EmployeeDatabase.insert(user);
+                            Admin user = Admin(
+                                name: name.text,
+                                mobileno: mobile.text,
+                                position: position.text,
+                                username: username.text,
+                                password: password.text,
+                                status: 1);
+                            var res = await AdminDatabase.insert(user);
                             if (res == "Success") {
                               await SharedPreferences.getInstance()
                                   .then((value) {

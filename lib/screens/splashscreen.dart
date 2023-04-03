@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:employee_management_system/screens/addEmployee.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     initdb();
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return const Home();
+        return const AddEmployee();
       }));
     });
   }

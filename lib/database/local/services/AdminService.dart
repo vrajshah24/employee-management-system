@@ -19,7 +19,7 @@ class AdminDatabase {
   static fetchAll() async {
     final db = await openDatabase(databaseName);
     final res = await db.rawQuery('Select * from $adminTable where status = 1');
-    return res;
+    return res.map((e) => Admin.fromJson(e)).toList();
   }
 
   static update(int id, Admin admin) async {

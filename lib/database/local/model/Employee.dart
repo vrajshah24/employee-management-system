@@ -7,7 +7,7 @@ class Employee {
   final String? ejoining_dt;
   final String? ecode;
   final String? emobile_no;
-  final String? ebank_acc;
+  final String? ebank_acc_no;
   final String? equalification;
   final String? esalary;
   final String? eposition;
@@ -23,7 +23,7 @@ class Employee {
     this.ejoining_dt,
     this.ecode,
     this.emobile_no,
-    this.ebank_acc,
+    this.ebank_acc_no,
     this.equalification,
     this.esalary,
     this.eposition,
@@ -40,7 +40,7 @@ class Employee {
       'ejoining_dt': ejoining_dt,
       'ecode': ecode,
       'emobile_no': emobile_no,
-      'ebank_acc': ebank_acc,
+      'ebank_acc_no': ebank_acc_no,
       'equalification': equalification,
       'esalary': esalary,
       'eposition': eposition,
@@ -58,7 +58,7 @@ class Employee {
       ejoining_dt: first['ejoining_dt'] as String,
       ecode: first['ecode'] as String,
       emobile_no: first['emobile_no'] as String,
-      ebank_acc: first['ebank_acc'] as String,
+      ebank_acc_no: first['ebank_acc_no'] as String,
       equalification: first['equalification'] as String,
       esalary: first['esalary'] as String,
       eposition: first['eposition'] as String,
