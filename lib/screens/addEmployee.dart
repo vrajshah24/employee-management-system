@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
+import '../database/local/model/Employee.dart';
 import '../registeredSuccessfully.dart';
 import '../responsive.dart';
 import '../widgets/formTextField.dart';
@@ -23,7 +23,7 @@ class _RegisterUserState extends State<RegisterUser> {
   TextEditingController name = TextEditingController();
   TextEditingController age = TextEditingController();
   TextEditingController doctorName = TextEditingController();
-
+  late Map<String, dynamic> dobDate;
   List gender = ['Male', 'Female', 'Other'];
   String selectedGender = "Male";
   bool cardiacHistory = false;
@@ -72,7 +72,7 @@ class _RegisterUserState extends State<RegisterUser> {
               Container(
                 padding: const EdgeInsets.only(top: 50),
                 decoration: BoxDecoration(
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                         blurRadius: 6.0,
                         spreadRadius: 4,
@@ -87,134 +87,26 @@ class _RegisterUserState extends State<RegisterUser> {
                       horizontal: 35 * getResponsive(context)),
                   child: Column(
                     children: [
-                      textfield('Patient ID', 'Patient ID', 1, patientId),
-                      textfield('Name', 'Name', 1, name),
-                      textfield('Age', 'Age', 1, age),
-                      textfield(
-                          'Doctor' 's Name', 'Doctor' 's Name', 1, doctorName),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white70,
-                        ),
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(left: 10.0, right: 10.0),
-                          child: DropdownButton(
-                            isExpanded: true,
-                            value: selectedGender,
-                            items: gender.map((e) {
-                              return DropdownMenuItem(
-                                value: e,
-                                child: Text(
-                                  e,
-                                  style: TextStyle(
-                                      fontSize: 14 * getResponsive(context)),
-                                ),
-                              );
-                            }).toList(),
-                            underline: const SizedBox.shrink(),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            onChanged: (value) {
-                              setState(() {
-                                selectedGender = value as String;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20 * getResponsive(context),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Past Cardiac History'),
-                          Switch(
-                            value: cardiacHistory,
-                            activeColor: secondaryColor,
-                            onChanged: (value) {
-                              setState(() {
-                                cardiacHistory = !cardiacHistory;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20 * getResponsive(context),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('High Blood Pressure'),
-                          Switch(
-                            activeColor: secondaryColor,
-                            value: hbp,
-                            onChanged: (value) {
-                              setState(() {
-                                hbp = !hbp;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20 * getResponsive(context),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Low Blood Pressure'),
-                          Switch(
-                            activeColor: secondaryColor,
-                            value: lbp,
-                            onChanged: (value) {
-                              setState(() {
-                                lbp = !lbp;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20 * getResponsive(context),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Diabetes'),
-                          Switch(
-                            activeColor: secondaryColor,
-                            value: diabetes,
-                            onChanged: (value) {
-                              setState(() {
-                                diabetes = !diabetes;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20 * getResponsive(context),
-                      ),
+                      textfield('Name', 'Name', 1, patientId),
+                      SelectDate(onChanged: (value) {
+                        dobDate = value;
+                      }),
+                      textfield('Address', 'Name', 1, patientId),
+                      textfield('Joining Date', 'Name', 1, patientId),
+                      textfield('Employee Code', 'Name', 1, patientId),
+                      textfield('Mobile No', 'Name', 1, patientId),
+                      textfield('Bank Account No', 'Name', 1, patientId),
+                      textfield('Qualification', 'Name', 1, patientId),
+                      textfield('Salary', 'Name', 1, patientId),
+                      textfield('Position', 'Name', 1, patientId),
+                      textfield('Username', 'Name', 1, patientId),
+                      textfield('Password', 'Name', 1, patientId),
                       InkWell(
                         onTap: () async {
                           if (form.currentState!.validate()) {
-                            User user = User(
-                                patient_id: patientId.text,
-                                name: name.text,
-                                age: age.text,
-                                gender: selectedGender,
-                                dr_name: doctorName.text,
-                                cardiac_history: checkBoolean(cardiacHistory),
-                                hbp: checkBoolean(hbp),
-                                lbp: checkBoolean(lbp),
-                                diabetes: checkBoolean(diabetes));
-                            var res = await UserDatabase.create(user);
-                            if (res == "Success") {
+                            // Employee user = Employee();
+                            // var res = await UserDatabase.create(user);
+                            if ("res" == "Success") {
                               await SharedPreferences.getInstance()
                                   .then((value) {
                                 value.setBool('login', true);
