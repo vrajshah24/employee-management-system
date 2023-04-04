@@ -27,4 +27,11 @@ class AdminDatabase {
     final res = await db.update(adminTable, admin.toJson(), where: 'id= $id');
     return res.toString();
   }
+
+  static login(username, password) async {
+    final db = await openDatabase(databaseName);
+    final res = await db.rawQuery(
+        'Select COUNT(id) from $adminTable where username  = $username AND password =  $password');
+    return res[0]["COUNT(id)"];
+  }
 }

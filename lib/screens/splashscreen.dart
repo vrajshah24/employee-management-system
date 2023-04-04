@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:employee_management_system/screens/addEmployee.dart';
+import 'package:employee_management_system/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import '../database/local/initDb.dart';
 import '../database/remote/api.dart';
-import 'home.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     initdb();
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return const AddEmployee();
+        return const Login();
       }));
     });
   }

@@ -11,14 +11,14 @@ import 'package:line_icons/line_icons.dart';
 import '../colors.dart';
 import '../responsive.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class EmployeeHome extends StatefulWidget {
+  const EmployeeHome({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<EmployeeHome> createState() => _EmployeeHomeState();
 }
 
-class _HomeState extends State<Home> {
+class _EmployeeHomeState extends State<EmployeeHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

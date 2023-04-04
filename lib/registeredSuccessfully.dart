@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'colors.dart';
-import 'screens/home.dart';
+import 'screens/adminHome.dart';
 
 registeredSuccessfully(context) {
   late FocusNode myFocusNode;
@@ -59,7 +59,7 @@ registeredSuccessfully(context) {
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
-                                return const Home();
+                                return const AdminHome();
                               },
                             ));
                             // Navigator.pop(context);

@@ -1,14 +1,12 @@
-import 'package:employee_management_system/database/local/model/Employee.dart';
 import 'package:employee_management_system/database/local/services/EmployeeService.dart';
+import 'package:employee_management_system/screens/adminHome.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '../colors.dart';
 import '../responsive.dart';
-import 'home.dart';
 
 class SingleEmployee extends StatefulWidget {
   const SingleEmployee({super.key, required this.id});
@@ -153,7 +151,8 @@ class _SingleEmployeeState extends State<SingleEmployee> {
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(
                               builder: (context) {
-                                return Home();
+                                return AdminHome();
+                                ;
                               },
                             ));
                           },

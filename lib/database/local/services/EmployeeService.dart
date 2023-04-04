@@ -37,4 +37,11 @@ class EmployeeDatabase {
     final res =
         await db.rawQuery('Delete from $employeeTable where eid  =  $id');
   }
+
+  static login(username, password) async {
+    final db = await openDatabase(databaseName);
+    final res = await db.rawQuery(
+        'Select COUNT(eid) from $employeeTable where eusername  = $username AND epassword =  $password');
+    return res[0]["COUNT(eid)"];
+  }
 }
