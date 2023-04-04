@@ -13,8 +13,8 @@ class EmployeeDatabase {
 
   static fetchbyId(int id) async {
     final db = await openDatabase(databaseName);
-    final res = await db.rawQuery(
-        'Select * from $employeeTable where eid  = $id AND estatus = 1');
+    final res = await db.rawQuery('Select * from $employeeTable  ');
+    print(res);
     return res[0];
   }
 
@@ -41,7 +41,7 @@ class EmployeeDatabase {
   static login(username, password) async {
     final db = await openDatabase(databaseName);
     final res = await db.rawQuery(
-        'Select COUNT(eid) from $employeeTable where eusername  = $username AND epassword =  $password');
-    return res[0]["COUNT(eid)"];
+        'Select eid from $employeeTable where eusername = "$username" AND epassword = "$password"');
+    return res[0]["eid"];
   }
 }

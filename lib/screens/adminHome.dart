@@ -1,12 +1,15 @@
+import 'package:employee_management_system/database/local/services/AdminService.dart';
 import 'package:employee_management_system/screens/addAdmin.dart';
 import 'package:employee_management_system/screens/addEmployee.dart';
 import 'package:employee_management_system/screens/adminListing.dart';
 import 'package:employee_management_system/screens/employeeListing.dart';
+import 'package:employee_management_system/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
 import '../responsive.dart';
@@ -19,6 +22,24 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  int id = 0;
+  var user;
+  getUser() async {
+    SharedPreferences.getInstance().then((value) {
+      id = value.getInt('id') as int;
+    }).then((value) async {
+      user = await AdminDatabase.fetchbyId(id);
+      setState(() {});
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,9 +65,21 @@ class _AdminHomeState extends State<AdminHome> {
                       Icons.menu,
                       color: descColor,
                     ),
-                    Icon(
-                      LineIcons.bell,
-                      color: descColor,
+                    InkWell(
+                      onTap: () {
+                        SharedPreferences.getInstance().then((value) {
+                          value.setInt('id', 0);
+                        });
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return const Login();
+                          },
+                        ));
+                      },
+                      child: Icon(
+                        LineIcons.powerOff,
+                        color: descColor,
+                      ),
                     )
                   ],
                 ),
@@ -78,7 +111,7 @@ class _AdminHomeState extends State<AdminHome> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Hi  Vraj ,',
+                            'Hi   ${user['name']},',
                             style: GoogleFonts.tangerine(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 32 * getResponsiveText(context)),
@@ -115,10 +148,16 @@ class _AdminHomeState extends State<AdminHome> {
                                 width: getWidth(context) * 0.40,
                                 child: Column(
                                   children: [
+                                    SizedBox(
+                                      height: 20 * getResponsive(context),
+                                    ),
                                     Image.asset(
-                                      'assets/heartbeat.png',
-                                      height: 120,
+                                      'assets/addEmployee.png',
+                                      height: 80,
                                       // alignment: Alignment.centerLeft,
+                                    ),
+                                    SizedBox(
+                                      height: 20 * getResponsive(context),
                                     ),
                                     Text('Add Employee')
                                   ],
@@ -147,10 +186,16 @@ class _AdminHomeState extends State<AdminHome> {
                                 width: getWidth(context) * 0.40,
                                 child: Column(
                                   children: [
+                                    SizedBox(
+                                      height: 20 * getResponsive(context),
+                                    ),
                                     Image.asset(
-                                      'assets/heartbeat.png',
-                                      height: 120,
+                                      'assets/viewEmployee.png',
+                                      height: 80,
                                       // alignment: Alignment.centerLeft,
+                                    ),
+                                    SizedBox(
+                                      height: 20 * getResponsive(context),
                                     ),
                                     Text('View Employee List')
                                   ],
@@ -190,10 +235,16 @@ class _AdminHomeState extends State<AdminHome> {
                                 width: getWidth(context) * 0.40,
                                 child: Column(
                                   children: [
+                                    SizedBox(
+                                      height: 20 * getResponsive(context),
+                                    ),
                                     Image.asset(
-                                      'assets/heartbeat.png',
-                                      height: 120,
+                                      'assets/addAdmin.png',
+                                      height: 80,
                                       // alignment: Alignment.centerLeft,
+                                    ),
+                                    SizedBox(
+                                      height: 20 * getResponsive(context),
                                     ),
                                     Text('Add Admin')
                                   ],
@@ -222,10 +273,16 @@ class _AdminHomeState extends State<AdminHome> {
                                 width: getWidth(context) * 0.40,
                                 child: Column(
                                   children: [
+                                    SizedBox(
+                                      height: 20 * getResponsive(context),
+                                    ),
                                     Image.asset(
-                                      'assets/heartbeat.png',
-                                      height: 120,
-                                      // alignment: Alignment.centerLeft,
+                                      'assets/viewAdmin.png',
+                                      height: 80,
+                                      alignment: Alignment.center,
+                                    ),
+                                    SizedBox(
+                                      height: 20 * getResponsive(context),
                                     ),
                                     Text('View Admin List')
                                   ],

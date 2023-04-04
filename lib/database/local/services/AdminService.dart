@@ -11,9 +11,9 @@ class AdminDatabase {
 
   static fetchbyId(int id) async {
     final db = await openDatabase(databaseName);
-    final res = await db
-        .rawQuery('Select * from $adminTable where id  = $id AND status = 1');
-    return res;
+    final res = await db.rawQuery('Select * from $adminTable where id = $id');
+    print(res);
+    return res[0];
   }
 
   static fetchAll() async {
@@ -31,7 +31,8 @@ class AdminDatabase {
   static login(username, password) async {
     final db = await openDatabase(databaseName);
     final res = await db.rawQuery(
-        'Select COUNT(id) from $adminTable where username  = $username AND password =  $password');
-    return res[0]["COUNT(id)"];
+        'Select id from $adminTable where username  = "$username" AND password = "$password"');
+    print(res[0]['id']);
+    return res[0]["id"];
   }
 }

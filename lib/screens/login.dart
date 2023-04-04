@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
 import '../responsive.dart';
@@ -36,19 +37,10 @@ class _LoginState extends State<Login> {
             height: getHeight(context),
             width: getWidth(context),
             child: Column(
-              children: [
-                const SizedBox(
+              children: const [
+                SizedBox(
                   height: 60,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: 10.0 * getResponsive(context),
-                      right: 10 * getResponsive(context)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [],
-                  ),
-                )
               ],
             ),
           ),
@@ -161,13 +153,20 @@ class _LoginState extends State<Login> {
                             ),
                             InkWell(
                               onTap: () async {
-                                int res = await AdminDatabase.login(
-                                    adminUsername.text, adminPassword.text);
+                                int res = await EmployeeDatabase.login(
+                                    employeeUsername.text,
+                                    employeePassword.text);
+                                print(res);
                                 if (res != 0) {
+                                  SharedPreferences.getInstance()
+                                      .then((value) async {
+                                    await value.setInt('id', res);
+                                    await value.setInt('role', 2);
+                                  });
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(
                                     builder: (context) {
-                                      return const AdminHome();
+                                      return const EmployeeHome();
                                     },
                                   ));
                                 }
@@ -204,14 +203,19 @@ class _LoginState extends State<Login> {
                             ),
                             InkWell(
                               onTap: () async {
-                                int res = await EmployeeDatabase.login(
-                                    employeeUsername.text,
-                                    employeePassword.text);
+                                int res = await AdminDatabase.login(
+                                    adminUsername.text, adminPassword.text);
+                                print(res);
                                 if (res != 0) {
+                                  SharedPreferences.getInstance()
+                                      .then((value) async {
+                                    await value.setInt('id', res);
+                                    await value.setInt('role', 1);
+                                  });
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(
                                     builder: (context) {
-                                      return const EmployeeHome();
+                                      return const AdminHome();
                                     },
                                   ));
                                 }

@@ -18,12 +18,14 @@ class InitDB {
   Future<Database> _initDB(String dbName) async {
     final dbpath = await getDatabasesPath();
     final path = "$dbpath/$dbName";
-    return await openDatabase(path, version: 1, onOpen: _createDB);
+    return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
-  _createDB(Database db) async {
+  _createDB(Database db, int i) async {
 //---------------- Adding Tables ------------------------------
     await db.execute(createTableforEmployee);
     await db.execute(createTableforAdmin);
+    await db.execute(
+        "Insert into $adminTable values(?,'admin','admin@123','Jack','General Manager','9876543210',1)");
   }
 }

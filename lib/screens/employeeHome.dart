@@ -1,15 +1,19 @@
+import 'package:employee_management_system/database/local/services/EmployeeService.dart';
 import 'package:employee_management_system/screens/addAdmin.dart';
 import 'package:employee_management_system/screens/addEmployee.dart';
 import 'package:employee_management_system/screens/adminListing.dart';
 import 'package:employee_management_system/screens/employeeListing.dart';
+import 'package:employee_management_system/screens/singleEmployee.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
 import '../responsive.dart';
+import 'login.dart';
 
 class EmployeeHome extends StatefulWidget {
   const EmployeeHome({super.key});
@@ -19,6 +23,25 @@ class EmployeeHome extends StatefulWidget {
 }
 
 class _EmployeeHomeState extends State<EmployeeHome> {
+  late int id;
+  var user;
+  getUser() async {
+    SharedPreferences.getInstance().then((value) {
+      id = value.getInt('id') as int;
+    }).then((value) async {
+      user = await EmployeeDatabase.fetchbyId(id);
+      setState(() {});
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUser();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,9 +67,21 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                       Icons.menu,
                       color: descColor,
                     ),
-                    Icon(
-                      LineIcons.bell,
-                      color: descColor,
+                    InkWell(
+                      onTap: () {
+                        SharedPreferences.getInstance().then((value) {
+                          value.setInt('id', 0);
+                        });
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return const Login();
+                          },
+                        ));
+                      },
+                      child: Icon(
+                        LineIcons.powerOff,
+                        color: descColor,
+                      ),
                     )
                   ],
                 ),
@@ -78,7 +113,7 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Hi  Vraj ,',
+                            'Hi, ${user['ename']},',
                             style: GoogleFonts.tangerine(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 32 * getResponsiveText(context)),
@@ -98,7 +133,9 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) {
-                                  return AddEmployee();
+                                  return SingleEmployee(
+                                    id: user['eid'],
+                                  );
                                 },
                               ));
                             },
@@ -112,47 +149,22 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                                     color: x,
                                     borderRadius: BorderRadius.circular(25)),
                                 height: 160,
-                                width: getWidth(context) * 0.40,
+                                width: getWidth(context) * 0.90,
                                 child: Column(
                                   children: [
+                                    SizedBox(
+                                      height: 10 * getResponsive(context),
+                                    ),
                                     Image.asset(
-                                      'assets/heartbeat.png',
-                                      height: 120,
+                                      'assets/mydetails.png',
+                                      height: 100,
+                                      fit: BoxFit.fitHeight,
                                       // alignment: Alignment.centerLeft,
                                     ),
-                                    Text('Add Employee')
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return const EmployeeListing();
-                                },
-                              ));
-                            },
-                            child: Card(
-                              color: x,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25)),
-                              elevation: 10,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: x,
-                                    borderRadius: BorderRadius.circular(25)),
-                                height: 160,
-                                width: getWidth(context) * 0.40,
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/heartbeat.png',
-                                      height: 120,
-                                      // alignment: Alignment.centerLeft,
+                                    SizedBox(
+                                      height: 20 * getResponsive(context),
                                     ),
-                                    Text('View Employee List')
+                                    Text('My Details')
                                   ],
                                 ),
                               ),
@@ -161,81 +173,6 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 40 * getResponsive(context),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0, right: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return AddAdmin();
-                                },
-                              ));
-                            },
-                            child: Card(
-                              color: x,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25)),
-                              elevation: 10,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: x,
-                                    borderRadius: BorderRadius.circular(25)),
-                                height: 160,
-                                width: getWidth(context) * 0.40,
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/heartbeat.png',
-                                      height: 120,
-                                      // alignment: Alignment.centerLeft,
-                                    ),
-                                    Text('Add Admin')
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return const AdminListing();
-                                },
-                              ));
-                            },
-                            child: Card(
-                              color: x,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25)),
-                              elevation: 10,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: x,
-                                    borderRadius: BorderRadius.circular(25)),
-                                height: 160,
-                                width: getWidth(context) * 0.40,
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/heartbeat.png',
-                                      height: 120,
-                                      // alignment: Alignment.centerLeft,
-                                    ),
-                                    Text('View Admin List')
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ))
           ],
